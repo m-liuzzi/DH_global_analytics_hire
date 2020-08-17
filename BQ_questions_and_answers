@@ -36,6 +36,43 @@ so, did they match their destination.
 
 Results visualization: https://github.com/m-liuzzi/DH_global_analytics_hire/issues/1
 
+SQL query:
+
+with users as(SELECT
+  fullVisitorId,
+  hit.transactionId,
+  (SELECT SAFE_CAST(value AS FLOAT64) FROM UNNEST(hit.customDimensions) WHERE index=18) lon, 
+  (SELECT SAFE_CAST(value AS FLOAT64) FROM UNNEST(hit.customDimensions) WHERE index=19) lat
+ FROM
+  `dhh-analytics-hiringspace.GoogleAnalyticsSample`.ga_sessions_export as t,
+UNNEST(t.hit) as hit, UNNEST(hit.customDimensions) as c
+GROUP BY 1,2,3,4
+ORDER BY 1),
+
+coord_diff as (SELECT 
+  a.fullVisitorId,
+  users.transactionId,
+  ST_GEOGPOINT(users.lon, users.lat) as user_geopoint,
+  users.lat - LAG(users.lat)
+  OVER(PARTITION BY a.fullVisitorId ORDER BY a.fullVisitorId) as lat_difference,
+  users.lon - LAG(users.lon)
+  OVER(PARTITION BY a.fullVisitorId ORDER BY a.fullVisitorId) as lon_difference,  
+FROM  `dhh-analytics-hiringspace.GoogleAnalyticsSample`.ga_sessions_export as a
+INNER JOIN users on  users.fullVisitorId = a.fullVisitorId)
+
+SELECT 
+  transactionId,
+  lat_difference,
+  lon_difference,
+  coord_diff.user_geopoint,
+  i.geopointCustomer,
+  i.geopointDropoff,
+  ST_DISTANCE(coord_diff.user_geopoint, i.geopointDropoff) as location_dropoff_distance_meters
+FROM
+  coord_diff
+INNER JOIN `dhh-analytics-hiringspace.BackendDataSample`.transactionalData as i
+ON i.frontendOrderId = coord_diff.transactionID
+ORDER BY location_dropoff_distance_meters DESC
 
 
  
