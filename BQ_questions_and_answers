@@ -34,6 +34,8 @@ Then, using the BackendDataSample table, see if those customers who changed
 their address ended placing orders and if those orders were delivered successfully, if
 so, did they match their destination.
 
+Results visualization: https://github.com/m-liuzzi/DH_global_analytics_hire/issues/1
+
 
 
  
