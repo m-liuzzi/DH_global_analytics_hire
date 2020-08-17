@@ -13,9 +13,7 @@ def read_data(api):
 def transform_df(df):
     df = df.loc[:, df.columns.str.contains('close')] #look only at the "close" price
     s=df.columns.str.split('.') #split column headers in order to retrieve the dates
-    dates = []
-    for sublist in s:
-        dates.append(sublist[1])
+    dates = [sublist[1] for sublist in s] #get only the date from header name
     df.columns = dates #replace headers only with the date relevant to the price
     df = pd.melt(df, var_name='date')
     df["value"] = df.value.astype(float)
