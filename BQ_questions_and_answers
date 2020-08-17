@@ -35,16 +35,5 @@ their address ended placing orders and if those orders were delivered successful
 so, did they match their destination.
 
 
-SELECT 
-   frontendOrderId,
-   backendOrderId,
-   ST_DISTANCE(geopointCustomer, geopointDropoff) as location_change_meters
- FROM
-  `dhh-analytics-hiringspace.BackendDataSample`.transactionalData
- GROUP BY
-  frontendOrderId,
-  backendOrderId,
-  location_change_meters
-
 
  
