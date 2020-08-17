@@ -1,0 +1,50 @@
+ 1. How many sessions are there?
+ SQL query: 
+ 
+ SELECT 
+  count(visitId) as total_sessions
+ FROM
+  `dhh-analytics-hiringspace.GoogleAnalyticsSample`.ga_sessions_export
+  
+  2. How many sessions does each visitor create?
+SQL query:
+
+SELECT 
+   fullVisitorId,
+  count(visitId)
+ FROM
+  `dhh-analytics-hiringspace.GoogleAnalyticsSample`.ga_sessions_export
+ GROUP BY
+  fullVisitorId
+ 
+ 3. How much time does it take on average to reach the order_confirmation screen per
+session (in minutes)?
+SQL query:
+
+SELECT 
+  AVG(timeOnSite/60) as time_needed_minutes
+FROM
+ `dhh-analytics-hiringspace.GoogleAnalyticsSample`.ga_sessions_export
+
+4. By using the GoogleAnalyticsSample data and BackendDataSample tables, analyse
+how often users tend to change their location in the beginning of their journey (screens
+like home and listing) versus in checkout and on order placement and demonstrate the
+the deviation between earlier and later inputs (if any) in terms of coordinates change.
+Then, using the BackendDataSample table, see if those customers who changed
+their address ended placing orders and if those orders were delivered successfully, if
+so, did they match their destination.
+
+
+SELECT 
+   frontendOrderId,
+   backendOrderId,
+   ST_DISTANCE(geopointCustomer, geopointDropoff) as location_change_meters
+ FROM
+  `dhh-analytics-hiringspace.BackendDataSample`.transactionalData
+ GROUP BY
+  frontendOrderId,
+  backendOrderId,
+  location_change_meters
+
+
+ 
