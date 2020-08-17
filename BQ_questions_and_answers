@@ -11,7 +11,7 @@ SQL query:
 
 SELECT 
    fullVisitorId,
-  count(visitId)
+  count(visitId) as number_of_sessions_per_visitor
  FROM
   `dhh-analytics-hiringspace.GoogleAnalyticsSample`.ga_sessions_export
  GROUP BY
