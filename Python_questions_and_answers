@@ -34,7 +34,7 @@ def calculate_rolling_3(df):
     return df.groupby(df.index // 3).agg("mean")
     
 def calculate_rolling_7(df):
-    print("3-day rolling average:")
+    print("7-day rolling average:")
     fig, ax = plt.subplots()
     ax.plot(df.groupby(df.index // 7).agg("mean"), marker='o', linestyle='-')
     ax.set_ylabel('7-day rolling average')
