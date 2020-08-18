@@ -26,6 +26,6 @@ class test_python_answers(unittest.TestCase):
 if __name__ == “__main__“:
   test_read_data()
   test_transform_df()
-  test_calculate_weekly_price
-  test_calculate_rolling_3
-  test_calculate_rolling_7
+  test_calculate_weekly_price()
+  test_calculate_rolling_3()
+  test_calculate_rolling_7()
