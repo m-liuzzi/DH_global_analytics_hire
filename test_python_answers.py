@@ -22,7 +22,7 @@ def test_calculate_rolling_7(df):
   df = calculate_rolling_7(df)
   self.assertTrue(len(df)) > 0
  
-if __name__ == “__main__“:
+if __name__ == __'main'__:
   df = test_read_data()
   test_transform_df(df)
   test_calculate_weekly_price(df)
